@@ -24,6 +24,25 @@ public class Configuration extends Mobile {
         c.setPosition(p);
         return caisses.add(c);
     }
+
+    public boolean ajouterElement(Mobile m,Position p){
+        m.setConfig(this);
+        if(m.getType()==Type.JOUEUR)
+            joueur=(Configuration)m;
+        else
+            caisses.add((Configuration)m);
+       return m.setPosition(p);
+    }
+
+    public void retirerElement(Mobile m){
+        if(m.getType()==Type.JOUEUR)
+            joueur=null;
+        else{
+                caisses.remove(m);
+        }
+            
+    }
+    
     public int getX(){
         return niveau.getX();
     }
@@ -32,6 +51,15 @@ public class Configuration extends Mobile {
     }
     public Niveau getNiveau(){
         return niveau;
+    }
+    public Position getSortie(Direction d){
+        return niveau.getSortie(d);
+    }
+    public Position getContraireSortie(Direction d){
+        return niveau.getContraireSortie(d);
+    }
+    public boolean ouvert(){
+        return niveau.ouvert();
     }
     public Element get(Position p){
         try{
@@ -75,7 +103,15 @@ public class Configuration extends Mobile {
         return false;
         
     }
-    
+    public boolean estMoi(Position p){
+        try{
+            for(int i=0;i<caisses.size();i++){
+                if(caisses.get(i).gePosition().equals(p))
+                    return this.gePosition().equals(p);
+            }
+        }catch(Exception e){}
+        return false;
+    }
     public void affich(){
         for(int i=0;i<getX();i++){
             for(int j=0;j<getY();j++){
@@ -84,17 +120,27 @@ public class Configuration extends Mobile {
                     if(estJoueur(p) || estCaisse(p))
                         System.out.print("+");
                     else
-                        System.out.print(",");
+                        System.out.print(".");
                 }
                     else{
                         if(estJoueur(p))
                             System.out.print("@");
                         else{
-                            if(estCaisse(p))
-                                System.out.print("$");
-                            else
-                                System.out.print(get(p).toString());
-                        }
+                            if(estMoi(p))
+                                System.out.print("*");
+                            else{
+                                if(estCaisse(p))
+                                    System.out.print("$");
+                                else{
+                                    if(estMonde(p))
+                                        System.out.print("&");
+                                    else
+                                        System.out.print(get(p).toString());
+                                }
+                                    
+                            }
+                            }
+                                
                             
                     }
                        
@@ -109,6 +155,16 @@ public class Configuration extends Mobile {
         for(int i=0;i<caisses.size();i++){
             if(caisses.get(i).gePosition().equals(p)){
                 if(caisses.get(i).getType()==Type.CAISSE)
+                    return true;
+            }
+                
+        }
+        return false;
+    }
+    public boolean estMonde(Position p) {
+        for(int i=0;i<caisses.size();i++){
+            if(caisses.get(i).gePosition().equals(p)){
+                if(caisses.get(i).getType()==Type.MONDE)
                     return true;
             }
                 

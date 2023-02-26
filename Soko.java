@@ -13,9 +13,9 @@ public class Soko {
 	
 public static void main(String[] args) {
 	 Configuration c=ChargerFichier("./src/jeux.txt", 0);
-	final FenetreJeu fenetre =new FenetreJeu(c);
-    // c.affich();
-	 //jouer(c);
+	//final FenetreJeu fenetre =new FenetreJeu(c);
+     c.affich();
+	 jouer(c);
 	}
 
 
@@ -100,12 +100,12 @@ public static void main(String[] args) {
 
     public static Configuration ChargerNiveau(String n){
 		Niveau niveau = null;
-		Configuration config = null,joueur=null;
+		Configuration config = null,joueur=null,monde=null;
 		ArrayList<Position> murs= new ArrayList<Position>();
 		ArrayList<Position> cibles = new ArrayList<Position>();
 		ArrayList<Position> poscaisses = new ArrayList<Position>();
 		ArrayList<Configuration> caisses = new ArrayList<Configuration>();
-		Position posjoueur=null;
+		Position posjoueur=null,sortie_est=null,sortie_nord=null,sortie_sud=null,sortie_ouest=null,pos_monde=null;
 		int j=0;
 		int x = 0;
 		for (String line : n.split("\n")){
@@ -116,6 +116,18 @@ public static void main(String[] args) {
 					break;
 				case '.':
 					cibles.add(new Position(j,i));
+					break;
+				case '>':
+					sortie_est = new Position(j,i);
+					break;
+				case '<':
+					sortie_ouest = new Position(j,i);
+					break;
+				case 'v':
+					sortie_sud = new Position(j,i);
+					break;
+				case '^':
+					sortie_nord = new Position(j,i);
 					break;
 				case '1':
 					joueur=ChargerFichier("./src/jeux.txt", 1);
@@ -155,8 +167,7 @@ public static void main(String[] args) {
 					poscaisses.add(new Position(j,i));
 					break;
 				case '0':
-					caisses.add(ChargerFichier("./src/jeux.txt", 0));
-					poscaisses.add(new Position(j,i));
+					pos_monde=new Position(j,i);
 					break;
 				default:
 					break;
@@ -166,8 +177,12 @@ public static void main(String[] args) {
 				x = line.length();
 			j++;
 		}
-		niveau = new Niveau(j, x);
-		config = new Configuration(null,null,niveau,joueur);
+		niveau = new Niveau(j, x,sortie_nord,sortie_est,sortie_sud,sortie_ouest);
+		config = new Configuration(null,pos_monde,niveau,joueur);
+		if(pos_monde!=null){
+			config.setConfig(config);
+			monde=config;
+		}
 		if(joueur!=null){
 			joueur.setConfig(config);
 			joueur.setPosition(posjoueur);
@@ -179,13 +194,21 @@ public static void main(String[] args) {
 			}
 			int i=0;
 		for (Configuration caisse: caisses){
-			caisse.setType(Type.CAISSE);
+			if(!caisse.ouvert())
+				caisse.setType(Type.CAISSE);
 			if (!config.addCaisse(caisse,poscaisses.get(i))){
 				System.err.println("Erreur : caisse "+poscaisses.get(i)+" impossible à poser");
 				return null;
 			}
 			i++;
 		}
+		if(pos_monde!=null){
+			if (!config.addCaisse(monde,pos_monde)){
+				System.err.println("Erreur : caisse "+poscaisses.get(i)+" impossible à poser");
+				return null;
+			}
+		}
+		
 			
 		for (Position position: cibles)
 			if (!niveau.addCible(position)){
