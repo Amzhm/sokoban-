@@ -40,7 +40,9 @@ public class Element {
                                         if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                             m.getConfig().retirerElement(n);
                                         return m.bougerVers(d);
-                                    }else   
+                                    }
+                                        m.getConfig().ajouterElement(n, n.gePosition());
+                                        ((Configuration)m).retirerElement(n);
                                         return false;
                                 }else{
                                     if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
@@ -63,9 +65,7 @@ public class Element {
                                 if(m.bougerVers(d)){
                                     Element.maListe.add(m);
                                     return true;
-                                }
-                                n.getConfig().getConfig().ajouterElement(n, p2);
-                                ((Configuration)n.getConfig().get(p)).retirerElement(n);  
+                                }  
                                 return false;
                             }
                             n.getConfig().getConfig().ajouterElement(n, p2);
@@ -74,7 +74,11 @@ public class Element {
                         }else{
                             if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                 n.getConfig().getConfig().retirerElement(n);
-                            return m.bougerVers(d);
+                                if(m.bougerVers(d)){
+                                    Element.maListe.add(m);
+                                    return true;
+                                }  
+                                return false;
                             }
                     }  
                     //entrer dans un monde  
@@ -113,8 +117,10 @@ public class Element {
                                 if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                     m.getConfig().retirerElement(n);
                                 return m.bougerVers(d);
-                            }else   
-                                return false;
+                            }
+                            m.getConfig().ajouterElement(n, n.gePosition());
+                            ((Configuration)m).retirerElement(n);
+                            return false;
                         }else{
                             if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                 m.getConfig().retirerElement(n);
