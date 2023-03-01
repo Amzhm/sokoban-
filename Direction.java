@@ -4,7 +4,7 @@ public enum Direction {
     Bas,
     Gauche;
 
-    public static Direction contraireDirection(Direction d){
+    public Direction contraireDirection(Direction d){
         if(d==Direction.Haut)
             return Direction.Bas;
         if(d==Direction.Bas)

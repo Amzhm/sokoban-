@@ -25,5 +25,26 @@ public class Mobile extends Element {
     public void setConfig(Configuration c){
         config=c;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Mobile other = (Mobile) obj;
+        if (config == null) {
+            if (other.config != null)
+                return false;
+        } else if (!config.equals(other.config))
+            return false;
+        if (p == null) {
+            if (other.p != null)
+                return false;
+        } else if (!p.equals(other.p))
+            return false;
+        return true;
+    }
     
 }

@@ -39,14 +39,22 @@ public class Position{
             return new Position(getX()+1, getY());
         return null;
     }
+      
     @Override
-    public boolean equals(Object o){
-        if(!(o instanceof Position))
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-        Position p=(Position) o;
-        if(getX()!=p.getX())
+        if (getClass() != obj.getClass())
             return false;
-        return getY()==p.getY();
+        Position other = (Position) obj;
+        if (x != other.x)
+            return false;
+        if (y != other.y)
+            return false;
+        return true;
     }
+
     
 }
