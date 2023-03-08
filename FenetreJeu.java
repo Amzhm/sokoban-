@@ -1,9 +1,7 @@
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 /*import java.net.NoRouteToHostException;
-
 import static java.awt.BorderLayout.NORTH;
 import static javax.swing.SwingConstants.*;*/
 public class FenetreJeu extends JPanel implements KeyListener{
@@ -13,7 +11,7 @@ public class FenetreJeu extends JPanel implements KeyListener{
         private int hauteur, largeur;
         private int size=85;
         private JFrame frame;
-        private Image player;
+        //private Image player;
 
         public FenetreJeu(Configuration t) {
             this.hauteur = t.getY();
@@ -41,7 +39,7 @@ public class FenetreJeu extends JPanel implements KeyListener{
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            player=new ImageIcon("playerimg.png").getImage();
+            //player=new ImageIcon("playerimg.png").getImage();
             //parcourt toutes les cases
             for (int l = 0; l < this.hauteur; l++) {
                 for (int c = 0; c < this.largeur; c++) {
@@ -62,8 +60,8 @@ public class FenetreJeu extends JPanel implements KeyListener{
                     if (tmp instanceof Mobile) {
 
                         if(terrain.estJoueur(p)){
-                        
-                            
+
+
                             g.setColor(Color.GREEN);
                             g.fillOval(l*size, c*size, size, size);
                         }
@@ -96,31 +94,21 @@ public class FenetreJeu extends JPanel implements KeyListener{
             restart.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-
                 }
-
                 @Override
                 public void mousePressed(MouseEvent e) {
-
                 }
-
                 @Override
                 public void mouseReleased(MouseEvent e) {
-
                 }
-
                 @Override
                 public void mouseEntered(MouseEvent e) {
-
                 }
-
                 @Override
                 public void mouseExited(MouseEvent e) {
-
                 }
             });
             frame.repaint();
-
         }*/
 
         @Override
@@ -133,22 +121,22 @@ public class FenetreJeu extends JPanel implements KeyListener{
             boolean arriere=false;
             switch(e.getKeyCode()) {
                 case KeyEvent.VK_LEFT:
-                    Element.elt.clear();
+                    Element.maListe.clear();
                     d = Direction.Gauche;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    Element.elt.clear();
+                    Element.maListe.clear();
                     d = Direction.Droite;
                     break;
-                case KeyEvent.VK_UP:Element.elt.clear();
+                case KeyEvent.VK_UP:Element.maListe.clear();
                     d = Direction.Haut;
                     break;
                 case KeyEvent.VK_DOWN:
-                    Element.elt.clear();
+                    Element.maListe.clear();
                     d = Direction.Bas;
                     break;
                 case KeyEvent.VK_Z:
-                    d=Direction.contraireDirection(Soko.directions.remove(Soko.directions.size()-1));
+                    d=Direction.contraireDirection(Soko.D.remove(Soko.D.size()-1));
 					arriere=true;
 					break;
                 case KeyEvent.VK_C:
@@ -158,14 +146,17 @@ public class FenetreJeu extends JPanel implements KeyListener{
             if(d !=null){
                 if (!arriere){
                     if(terrain.bougerJoueurVers(d))
-                        Soko.directions.add(d);
+                        Soko.D.add(d);
                     terrain=terrain.getJoueur().getConfig();
-                    if(!Element.elt.isEmpty())
-                        Soko.elt.add(Element.elt.get(0));
-                    
-                        
+                    frame.setContentPane(this);
+                    if(!Element.maListe.isEmpty())
+                        Soko.maListe.add(Element.maListe.get(0));
+
+
                 }else{
-                    Soko.elt.remove(Soko.elt.size()-1).bougerVers(d);
+                    Soko.maListe.remove(Soko.maListe.size()-1).bougerVers(d);
+                    terrain=terrain.getJoueur().getConfig();
+                    frame.setContentPane(this);
                 }
             }
             frame.repaint();
@@ -178,5 +169,3 @@ public class FenetreJeu extends JPanel implements KeyListener{
         }
 
     }
-
-

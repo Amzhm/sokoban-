@@ -54,7 +54,7 @@ public class Configuration extends Mobile {
 
     public Element get(Position p){
         if(joueur!=null && joueur.gePosition()!=null){
-            if(joueur.gePosition().equals(p))
+            if(joueur.getConfig().equals(this) && joueur.gePosition().equals(p))
             return joueur;
         }
         for(int i=0;i<caisses.size();i++){

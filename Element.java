@@ -35,7 +35,7 @@ public class Element {
                                     return false;
                                 Mobile n=(Mobile)m.getConfig().get(p);
                                 if(!((Configuration) m).ajouterElement(n, ((Configuration)m).getContraireSortie(d))){
-                                    n.getConfig().get(n.getConfig().getContraireSortie(d)).bougerVers(d.contraireDirection(d));
+                                    n.getConfig().get(n.getConfig().getContraireSortie(d)).bougerVers(Direction.contraireDirection(d));
                                     if(n.setPosition(n.getConfig().getContraireSortie(d))){
                                         if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                             m.getConfig().retirerElement(n);
@@ -58,7 +58,7 @@ public class Element {
                             return false;
                         Mobile n=(Mobile)m.getConfig().get(p2);
                         if(!((Configuration) m.getConfig().get(p)).ajouterElement(n, ((Configuration) n.getConfig().get(p)).getContraireSortie(d))){
-                            n.getConfig().get(n.getConfig().getContraireSortie(d)).bougerVers(d.contraireDirection(d));
+                            n.getConfig().get(n.getConfig().getContraireSortie(d)).bougerVers(Direction.contraireDirection(d));
                             if(n.setPosition(n.getConfig().getContraireSortie(d))){
                                 if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                      n.getConfig().getConfig().retirerElement(n);
@@ -112,7 +112,7 @@ public class Element {
                             return false;
                         Mobile n=(Mobile)m.getConfig().get(p);
                         if(!((Configuration) m).ajouterElement(n, ((Configuration)m).getContraireSortie(d))){
-                            n.getConfig().get(n.getConfig().getContraireSortie(d)).bougerVers(d.contraireDirection(d));
+                            n.getConfig().get(n.getConfig().getContraireSortie(d)).bougerVers(Direction.contraireDirection(d));
                             if(n.setPosition(n.getConfig().getContraireSortie(d))){
                                 if(n.getType()==Type.CAISSE || (n.getType()==Type.MONDE))
                                     m.getConfig().retirerElement(n);
@@ -158,6 +158,7 @@ public class Element {
                 else {
                     if(m.getType()==Type.CAISSE || (m.getType()==Type.MONDE))
                          ((Configuration) m.getConfig().get(p1)).retirerElement(m);
+                    
                     Element.maListe.add(m);
                      return true;
                     }

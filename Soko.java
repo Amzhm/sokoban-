@@ -8,7 +8,12 @@ public class Soko {
 	static ArrayList<Direction> D=new ArrayList<Direction>();
 	static int n;
 public static void main(String[] args) {
-	int j;
+	Configuration c=ChargerFichier("./verssion3.1/verssion3/jeux2.txt",0);
+	//FenetreJ f=new FenetreJ(c);
+	//InterfaceGraphique.demarrer(c);
+	//Fenetre f=new Fenetre(c);
+	maFentre f1=new maFentre(c);
+	/*int j;
 	Scanner clavier = new Scanner(System.in);
 	System.out.print("Veuillez choisir votre niveau:");
 	n = clavier.nextInt();
@@ -21,7 +26,7 @@ public static void main(String[] args) {
 		  if(j==0)
 		  	return;
 		n++;
-	}
+	}*/
       
     }
     public static void jouer(Configuration config){
@@ -53,7 +58,7 @@ public static void main(String[] args) {
 						d = Direction.Droite;
 						break;
 					case 0:
-						d=D.get(D.size()-1).contraireDirection(D.remove(D.size()-1));
+						d=Direction.contraireDirection(D.remove(D.size()-1));
 						arriere=true;
 						break;
 					case 7:
