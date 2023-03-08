@@ -1,19 +1,42 @@
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Soko {
 	static ArrayList<Element> maListe= new ArrayList<Element>();
 	static ArrayList<Direction> D=new ArrayList<Direction>();
+	static ArrayList<String> niveaux=new ArrayList<String>();
 	static int n;
 public static void main(String[] args) {
 	int j;
+	
+	String fichier="fichierdeniveau.txt";
+	BufferedReader br =null;
+	try {
+		br=new BufferedReader(new FileReader(fichier));
+		String l="";
+		while ((l=br.readLine()) != null){
+			niveaux.add(l);
+		}
+	}catch(Exception e) {
+		e.printStackTrace();
+	} finally{
+		if (br!=null)
+			try{
+				br.close();
+			}catch (IOException i){
+				i.printStackTrace();
+			}
+	}
 	Scanner clavier = new Scanner(System.in);
-	System.out.print("Veuillez choisir votre niveau:");
+	System.out.print("debuter une partie\n ");
+	System.out.print("quelle niveau vous voulez\n ");
 	n = clavier.nextInt();
 	while(true){
-		Configuration c=ChargerFichier("./jeux2.txt",n);
+		Configuration c=ChargerFichier(niveaux.get(n-1),0);
       	jouer(c);
 		  System.out.println("Felicitation vous avez gagnez le niveau "+n);
 		  System.out.print("Voulez vous continuer 0/1: ");
@@ -57,7 +80,7 @@ public static void main(String[] args) {
 						arriere=true;
 						break;
 					case 7:
-						sokoban=ChargerFichier("./jeux2.txt",n);
+						sokoban=ChargerFichier(niveaux.get(n-1),0);
 						
 
 					default:
@@ -104,7 +127,7 @@ public static void main(String[] args) {
 		}
 		return config;
 	}
-    public static Configuration ChargerNiveau(String n){
+    public static Configuration ChargerNiveau(String k){
 		Niveau niveau = null;
 		Configuration config = null,joueur=null,monde=null;
 		ArrayList<Position> murs= new ArrayList<Position>();
@@ -114,7 +137,7 @@ public static void main(String[] args) {
 		Position posjoueur=null,sortie_est=null,sortie_nord=null,sortie_sud=null,sortie_ouest=null,pos_monde=null;
 		int j=0;
 		int x = 0;
-		for (String line : n.split("\n")){
+		for (String line : k.split("\n")){
 			for (int i=0;i<line.length();i++){
 				switch (line.charAt(i)) {
 				case '#':
@@ -136,40 +159,40 @@ public static void main(String[] args) {
 					sortie_nord = new Position(j,i);
 					break;
 				case '1':
-					joueur=ChargerFichier("./jeux2.txt", 1);
+					joueur=ChargerFichier(niveaux.get(n-1), 1);
 						joueur.setType(Type.JOUEUR);
 						posjoueur=new Position(j,i);
 						break;
 				case '2':
-					caisses.add(ChargerFichier("./jeux2.txt", 2));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 2));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '3':
-					caisses.add(ChargerFichier("./jeux2.txt", 3));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 3));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '4':
-					caisses.add(ChargerFichier("./jeux2.txt", 4));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 4));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '5':
-					caisses.add(ChargerFichier("./jeux2.txt", 5));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 5));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '6':
-					caisses.add(ChargerFichier("./jeux2.txt", 6));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 6));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '7':
-					caisses.add(ChargerFichier("./jeux2.txt", 7));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 7));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '8':
-					caisses.add(ChargerFichier("./jeux2.txt", 8));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 8));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '9':
-					caisses.add(ChargerFichier("./jeux2.txt", 9));
+					caisses.add(ChargerFichier(niveaux.get(n-1), 9));
 					poscaisses.add(new Position(j,i));
 					break;
 				case '0':
