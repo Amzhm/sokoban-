@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -11,9 +13,9 @@ public class Soko {
 	static ArrayList<String> niveaux=new ArrayList<String>();
 	static int n;
 public static void main(String[] args) {
-	int j;
-	
 	String fichier="fichierdeniveau.txt";
+	String unfichier="fichiersauvgarde.txt";
+	String sauvgarde=null;
 	BufferedReader br =null;
 	try {
 		br=new BufferedReader(new FileReader(fichier));
@@ -32,21 +34,71 @@ public static void main(String[] args) {
 			}
 	}
 	Scanner clavier = new Scanner(System.in);
-	System.out.print("debuter une partie\n ");
-	System.out.print("quelle niveau vous voulez\n ");
-	n = clavier.nextInt();
+	System.out.print("debuter une partie selectionnez 0\n ");
+	System.out.print("reprendre la partie selectionnez 1\n ");
+	int h=clavier.nextInt();
+	if(h==0)
+		n = 1;
+	else{
+		br=null;
+		try {
+			br=new BufferedReader(new FileReader(unfichier));
+			String l="";
+			while ((l=br.readLine()) != null){
+				 sauvgarde=l;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally{
+			if (br!=null)
+				try{
+					br.close();
+				}catch (IOException z){
+					z.printStackTrace();
+				}
+       
+    }
+	n=niveaux.indexOf(sauvgarde)+1;
+	
+
+	}
+	
+
+	
 	while(true){
 		Configuration c=ChargerFichier(niveaux.get(n-1),0);
       	jouer(c);
-		  System.out.println("Felicitation vous avez gagnez le niveau "+n);
-		  System.out.print("Voulez vous continuer 0/1: ");
-		  j = clavier.nextInt();
-		  if(j==0)
-		  	return;
-		n++;
+		System.out.println("Felicitation vous avez gagnez le niveau "+n);
+		System.out.println("prochain niveau 0\nExit avec sauvgarde 1\n");
+		h=clavier.nextInt();
+		if(h==0){
+			n++;
+		}
+		else{
+        	try {
+            	// Créer un objet File qui représente le fichier texte à ouvrir
+            	File file = new File("fichiersauvgarde.txt");
+
+            	// Créer un objet FileWriter pour écrire dans le fichier et écraser le contenu existant
+            	FileWriter writer = new FileWriter(file, false);
+
+            	// Écrire des données dans le fichier
+            	writer.write(niveaux.get(n));
+
+            	// Fermer le fichier
+            	writer.close();
+				return;
+        	} catch (IOException e) {
+            	e.printStackTrace();
+        	}
+    
+
+
+		}
+	}
 	}
       
-    }
+
     public static void jouer(Configuration config){
         Configuration sokoban = new Configuration(config);
         Scanner clavier = new Scanner(System.in);

@@ -171,8 +171,8 @@ public class Configuration extends Mobile {
             if(!estCible(caisses.get(i).gePosition()))
                 return false;
         }
-        /*if(!estCible(joueur.gePosition()))
-            return false;*/
+        if(!estCible(joueur.gePosition()))
+            return false;
         return true;
     }
 
