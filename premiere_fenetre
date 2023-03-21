@@ -83,37 +83,36 @@ public class FenetreJeu extends JPanel implements KeyListener{
             g.drawString("Score: "+String.valueOf(Jeu.sortis),largeur,17);*/
 
         }
-        /*public void drawEye(Graphics g,Case c,Direction d){
-            switch(d){
-                case est -> g.fillOval(c.col*tailleCase+((tailleCase/2)+4),c.lig*tailleCase+(tailleCase/3),(tailleCase/3),(tailleCase/3));
-                case ouest -> g.fillOval(c.col*tailleCase,c.lig*tailleCase+(tailleCase/3),(tailleCase/3),(tailleCase/3));
-                case nord -> g.fillOval(c.col*tailleCase+(tailleCase/3),c.lig*tailleCase,(tailleCase/3),(tailleCase/3));
-                case sud -> g.fillOval(c.col*tailleCase+(tailleCase/3),c.lig*tailleCase+((tailleCase/2)+4),(tailleCase/3),(tailleCase/3));
-            }
+        
         }*/
-        public void ecranFinal() {
-            frame.remove(this);
-            //JLabel label = new JLabel("Score " + n);
-            JLabel label = new JLabel("YOU WIN");
-            label.setFont(new Font("Verdana", 1, 20));
-            label.setHorizontalAlignment(SwingConstants.CENTER);
-            label.setSize(this.getSize());
-            frame.getContentPane().add(label);
-            //ajout boutton
-            JButton restart= new JButton("Rejouer");
-            restart.setFont(new Font("Verdana", 1, 20));
-            restart.setForeground(Color.black);
-            restart.setHorizontalAlignment(SwingConstants.CENTER);
-            restart.setFocusable(false);
-            restart.setBounds((largeur/2)*tailleCase-100,(hauteur/2)*tailleCase+50,200,70);
-            restart.setVisible(true);
-            frame.getContentPane().add(restart);
-            restart.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-
-                }
-
+       public void afficherDebutJeu() {
+    // Création du titre "SOKOBAN"
+    JLabel titre = new JLabel("SOKOBAN");
+    titre.setFont(new Font("Arial", Font.BOLD, 50));
+    titre.setHorizontalAlignment(JLabel.CENTER);
+    
+    // Chargement de l'image de Sokoban
+    ImageIcon image = new ImageIcon("chemin/vers/image/sokoban.png");
+    JLabel imageLabel = new JLabel(image);
+    
+    // Création du bouton "Start"
+    JButton boutonStart = new JButton("Start");
+    boutonStart.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            if(e.getsource()==boutonStart){
+		selclevel();
+	}
+        }
+    });
+    
+    // Ajout des éléments à la fenêtre
+    getContentPane().setLayout(new BorderLayout());
+    getContentPane().add(titre, BorderLayout.NORTH);
+    getContentPane().add(imageLabel, BorderLayout.CENTER);
+    getContentPane().add(boutonStart, BorderLayout.SOUTH);
+    pack();
+    setVisible(true);
+}
                 @Override
                 public void mousePressed(MouseEvent e) {
 
