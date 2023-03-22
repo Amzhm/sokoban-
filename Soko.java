@@ -13,36 +13,44 @@ public class Soko {
 	static ArrayList<String> niveaux=new ArrayList<String>();
 	static int n;
 public static void main(String[] args) {
-	String fichier="fichierdeniveau.txt";
-	String unfichier="fichiersauvgarde.txt";
-	String sauvgarde=null;
-	BufferedReader br =null;
-	try {
-		br=new BufferedReader(new FileReader(fichier));
-		String l="";
-		while ((l=br.readLine()) != null){
-			niveaux.add(l);
-		}
-	}catch(Exception e) {
-		e.printStackTrace();
-	} finally{
-		if (br!=null)
-			try{
-				br.close();
-			}catch (IOException i){
-				i.printStackTrace();
-			}
-	}
+	niveaux=loadgame("fichierdeniveau.txt");
 	Scanner clavier = new Scanner(System.in);
-	System.out.print("debuter une partie selectionnez 0\n ");
+	System.out.print("debuter une nouvelle partie selectionnez 0\n ");
 	System.out.print("reprendre la partie selectionnez 1\n ");
 	int h=clavier.nextInt();
 	if(h==0)
 		n = 1;
 	else{
-		br=null;
+		n=loadbackup("fichiersauvgarde.txt");
+	}
+	while(true){
+		Configuration c=ChargerFichier(niveaux.get(n-1),0);
+      	jouer(c);
+	}
+	}
+	public static void safeguard(int n){
 		try {
-			br=new BufferedReader(new FileReader(unfichier));
+			// Créer un objet File qui représente le fichier texte à ouvrir
+			File file = new File("fichiersauvgarde.txt");
+
+			// Créer un objet FileWriter pour écrire dans le fichier et écraser le contenu existant
+			FileWriter writer = new FileWriter(file, false);
+
+			// Écrire des données dans le fichier
+			writer.write(niveaux.get(n-1));
+
+			// Fermer le fichier
+			writer.close();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+    public static int loadbackup(String fn){
+		BufferedReader br=null;
+		String sauvgarde=null;
+		try {
+			br=new BufferedReader(new FileReader(fn));
 			String l="";
 			while ((l=br.readLine()) != null){
 				 sauvgarde=l;
@@ -58,52 +66,34 @@ public static void main(String[] args) {
 				}
        
     }
-	n=niveaux.indexOf(sauvgarde)+1;
+	return niveaux.indexOf(sauvgarde)+1;
 	
-
 	}
-	
-
-	
-	while(true){
-		Configuration c=ChargerFichier(niveaux.get(n-1),0);
-      	jouer(c);
-		System.out.println("Felicitation vous avez gagnez le niveau "+n);
-		System.out.println("prochain niveau 0\nExit avec sauvgarde 1\n");
-		h=clavier.nextInt();
-		if(h==0){
-			n++;
+	public static ArrayList<String> loadgame(String fn){
+		BufferedReader br =null;
+		ArrayList<String> nj=new ArrayList<String>();
+	try {
+		br=new BufferedReader(new FileReader(fn));
+		String l="";
+		while ((l=br.readLine()) != null){
+			nj.add(l);
 		}
-		else{
-        	try {
-            	// Créer un objet File qui représente le fichier texte à ouvrir
-            	File file = new File("fichiersauvgarde.txt");
-
-            	// Créer un objet FileWriter pour écrire dans le fichier et écraser le contenu existant
-            	FileWriter writer = new FileWriter(file, false);
-
-            	// Écrire des données dans le fichier
-            	writer.write(niveaux.get(n));
-
-            	// Fermer le fichier
-            	writer.close();
-				return;
-        	} catch (IOException e) {
-            	e.printStackTrace();
-        	}
-    
-
-
-		}
+	}catch(Exception e) {
+		e.printStackTrace();
+	} finally{
+		if (br!=null)
+			try{
+				br.close();
+			}catch (IOException i){
+				i.printStackTrace();
+			}
 	}
+	return nj;
 	}
-      
-
     public static void jouer(Configuration config){
         Configuration sokoban = new Configuration(config);
         Scanner clavier = new Scanner(System.in);
         int s;
-		
         sokoban.affich();
         while(!sokoban.victoire()){
             Direction d = null;
@@ -158,6 +148,13 @@ public static void main(String[] args) {
 
             sokoban.affich();
         }
+		System.out.println("Felicitation vous avez gagnez le niveau "+n);
+		n++;
+		if(n>30)
+			System.out.println("fin du jeu");
+		safeguard(n);
+		Configuration tmp=ChargerFichier(niveaux.get(n-1), 0);
+		jouer(tmp);
     }
     public static Configuration ChargerFichier(String fn,int level){
 		Configuration config = null;
