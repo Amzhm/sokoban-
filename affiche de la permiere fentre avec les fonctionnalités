@@ -1,0 +1,174 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Mafen extends JPanel implements ActionListener {
+	JButton boutonStart;
+	JFrame fenetre;
+	public Mafen() {
+        fenetre = new JFrame("SOKOBAN");
+        fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        fenetre.setSize(600, 400);
+        fenetre.setLocationRelativeTo(null); // centrer la fenetre
+
+        // Panel pour le fond noir
+        
+        this.setBackground(Color.BLACK);
+        this.setLayout(new BorderLayout());
+
+        // Label pour la photo
+        ImageIcon image = new ImageIcon("images1/Images/soko.jpg"); // remplacer avec votre propre chemin et nom de fichier
+        JLabel labelPhoto = new JLabel(image);
+        labelPhoto.setHorizontalAlignment(JLabel.CENTER); // centrer la photo
+
+        // Label pour le titre
+        JLabel labelTitre = new JLabel("SOKOBAN");
+        labelTitre.setForeground(Color.RED); // texte en blanc
+        labelTitre.setFont(new Font("Arial", Font.BOLD, 48)); // taille et style de police
+        labelTitre.setHorizontalAlignment(JLabel.CENTER); // centrer le titre
+
+        // Bouton pour commencer le jeu
+        JButton boutonStart = new JButton("Start");
+        boutonStart.setFont(new Font("Verdana", 1, 20));
+        boutonStart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Select();
+            }
+        });
+        JPanel panelBouton = new JPanel(); // panel pour le bouton
+        panelBouton.setBackground(Color.BLACK);
+        panelBouton.add(boutonStart); // ajouter le bouton au panel
+        System.out.println("gdgdg");
+        // Ajouter les composants au panel
+        add(labelPhoto, BorderLayout.CENTER);
+        add(labelTitre, BorderLayout.NORTH);
+        add(panelBouton, BorderLayout.SOUTH); // ajouter le panel du bouton au sud
+
+        // Ajouter le panel à la fenetre
+        fenetre.add(this);
+
+        fenetre.setVisible(true); // afficher la fenetre
+    }
+	public void Select() {
+		fenetre.getContentPane().removeAll(); // Enlever tous les composants de la fenêtre
+	    
+	    // Panel pour les boutons
+	    JPanel panelBoutons = new JPanel(new GridLayout(5, 1));
+	    panelBoutons.setBackground(Color.BLACK);
+	    
+	    // Bouton "Level 1"
+	    JButton boutonLevel1 = new JButton("Level 1");
+	    boutonLevel1.setFont(new Font("Verdana", 1, 20));
+	    boutonLevel1.setForeground(Color.WHITE);
+	    boutonLevel1.setBackground(Color.BLACK);
+	    boutonLevel1.setFocusable(false);
+	    boutonLevel1.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	        		fenetre.dispose();
+	            // lancer soko sur niveau 1
+	        }
+	    });
+	    
+	    // Bouton "Choose Your Level"
+	    JButton boutonChooseLevel = new JButton("Choose Your Level");
+	    boutonChooseLevel.setFont(new Font("Verdana", 1, 20));
+	    boutonChooseLevel.setForeground(Color.WHITE);
+	    boutonChooseLevel.setBackground(Color.BLACK);
+	    boutonChooseLevel.setFocusable(false);
+	    boutonChooseLevel.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            // Demander à l'utilisateur de saisir le numéro du niveau
+	            String niveauString = JOptionPane.showInputDialog(fenetre, "Entrez le numéro du niveau entre 1 et 60 :", "Choisir un niveau", JOptionPane.PLAIN_MESSAGE);
+
+	            // Vérifier si l'utilisateur a cliqué sur "Annuler" ou a entré un texte vide
+	            if (niveauString == null || niveauString.trim().isEmpty()) {
+	                return;
+	            }
+
+	            // Convertir la chaîne de caractères en entier
+	            int niveau;
+	            try {
+	                niveau = Integer.parseInt(niveauString);
+	            } catch (NumberFormatException ex) {
+	                JOptionPane.showMessageDialog(fenetre, "Le numéro de niveau doit être un entier.", "Erreur", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+	            System.out.println(niveau);
+	            // Vérifier si le numéro de niveau est valide
+	            if (niveau < 1 || niveau > 60) {
+	                JOptionPane.showMessageDialog(fenetre, "Le numéro de niveau doit être entre 1 et 60.", "Erreur", JOptionPane.ERROR_MESSAGE);
+	                return;
+	            }
+	            fenetre.dispose();
+	            // TODO: // lancer soko sur niveau niveau
+	        }
+	    });
+
+	    // Bouton "cnt"
+	    JButton cnt = new JButton("Continuer");
+	    cnt.setFont(new Font("Verdana", 1, 20));
+	    cnt.setForeground(Color.WHITE);
+	    cnt.setBackground(Color.BLACK);
+	    cnt.setFocusable(false);
+	    cnt.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	        		fenetre.dispose();
+	            // TODO: Ajouter le code pour choisir un level
+	        }
+	    });
+	    JButton retour = new JButton("retour");
+	    retour.setFont(new Font("Verdana", 1, 20));
+	    retour.setForeground(Color.WHITE);
+	    retour.setBackground(Color.BLACK);
+	    retour.setFocusable(false);
+	    retour.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	        	fenetre.dispose();
+	        	Mafen fenetrePrecedente = new Mafen();
+	            
+	            // Fermer la fenêtre actuelle
+	            
+	        }
+	    });
+	    JButton exit = new JButton("exit");
+	  exit.setFont(new Font("Verdana", 1, 20));
+	    exit.setForeground(Color.WHITE);
+	    exit.setBackground(Color.BLACK);
+	    exit.setFocusable(false);
+	    exit.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	        	fenetre.dispose();
+	          
+	        }
+	    });
+	 // Ajout des boutons au panel
+	    panelBoutons.add(boutonLevel1);
+	    panelBoutons.add(boutonChooseLevel);
+	    panelBoutons.add(cnt);
+	    panelBoutons.add(retour);
+	    panelBoutons.add(exit);
+
+	    // Panel principal pour contenir tous les éléments
+	    JPanel panelPrincipal = new JPanel(new BorderLayout());
+	    panelPrincipal.setBackground(Color.BLACK);
+
+	    // Ajout du panel de boutons au panel principal
+	    panelPrincipal.add(panelBoutons, BorderLayout.CENTER);
+
+	    // Ajout du panel principal à la fenêtre
+	    fenetre.getContentPane().add(panelPrincipal, BorderLayout.CENTER);
+
+	    // Rafraîchir la fenêtre pour afficher les changements
+	    fenetre.revalidate();
+	    fenetre.repaint();
+	}
+	public static void main(String[] args) {
+		Mafen j= new Mafen();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+}
