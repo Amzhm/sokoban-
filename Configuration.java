@@ -88,6 +88,9 @@ public class Configuration extends Mobile {
     public boolean estCible(Position p){
         return niveau.estCible(p);
     }
+    public boolean estCibleJoueur(Position p){
+        return niveau.estCibleJoueur(p);
+    }
 
     public boolean estJoueur(Position p){
        try{
@@ -126,29 +129,31 @@ public class Configuration extends Mobile {
         for(int i=0;i<getX();i++){
             for(int j=0;j<getY();j++){
                 Position p=new Position(i, j);
-                if(estCible(p)){
+                if(estCibleJoueur(p)){
                     if(estJoueur(p) || estCaisse(p))
-                        System.out.print("+");
+                        System.out.print("-");
                     else
-                        System.out.print(".");
-                }else{
-                        if(estJoueur(p))
-                            System.out.print("@");
-                        else{
-                            if(estCaisse(p))
-                                System.out.print("$");
-                            else
-                                System.out.print(get(p).toString());
-                        }
-                            
-                    }
-                       
+                    System.out.print(",");
                 }
-                        
-                
+                else{if(estCible(p)){
+                        if(estJoueur(p) || estCaisse(p))
+                            System.out.print("+");
+                        else
+                            System.out.print(".");
+                        }else{
+                            if(estJoueur(p))
+                                System.out.print("@");
+                            else{
+                                if(estCaisse(p))
+                                    System.out.print("$");
+                                else
+                                    System.out.print(get(p).toString());
+                            }
+                        }
+                    }
+                }
                 System.out.println(); 
             }
-            
         }
     
     @Override
@@ -162,20 +167,17 @@ public class Configuration extends Mobile {
        
         }
     public boolean victoire(){
-        /*if(monde==null){
-            if(monde.victoire())
-             return true;
-        }*/
-        
         for(int i=0;i<caisses.size();i++){
             if(!estCible(caisses.get(i).gePosition()))
                 return false;
         }
-        if(!estCible(joueur.gePosition()))
+        if(!estCibleJoueur(joueur.gePosition()))
             return false;
+        if(this.getConfig()!=null && !this.getConfig().victoire())
+            return false;
+        
         return true;
     }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -202,5 +204,6 @@ public class Configuration extends Mobile {
             return false;
         return true;
     }
+    
     
 }

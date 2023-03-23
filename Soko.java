@@ -183,7 +183,7 @@ public static void main(String[] args) {
 		ArrayList<Position> cibles = new ArrayList<Position>();
 		ArrayList<Position> poscaisses = new ArrayList<Position>();
 		ArrayList<Configuration> caisses = new ArrayList<Configuration>();
-		Position posjoueur=null,sortie_est=null,sortie_nord=null,sortie_sud=null,sortie_ouest=null,pos_monde=null;
+		Position posjoueur=null,sortie_est=null,sortie_nord=null,sortie_sud=null,sortie_ouest=null,pos_monde=null, ciblejoueuer=null;
 		int j=0;
 		int x = 0;
 		for (String line : k.split("\n")){
@@ -194,6 +194,9 @@ public static void main(String[] args) {
 					break;
 				case '.':
 					cibles.add(new Position(j,i));
+					break;
+				case ',':
+					ciblejoueuer= new Position(j,i);
 					break;
 				case '>':
 					sortie_est = new Position(j,i);
@@ -255,7 +258,7 @@ public static void main(String[] args) {
 				x = line.length();
 			j++;
 		}
-		niveau = new Niveau(j, x,sortie_nord,sortie_est,sortie_sud,sortie_ouest);
+		niveau = new Niveau(j, x,sortie_nord,sortie_est,sortie_sud,sortie_ouest,ciblejoueuer);
 		config = new Configuration(null,pos_monde,niveau,joueur);
 		config.setConfig(config);
 		if(pos_monde!=null){
@@ -285,9 +288,12 @@ public static void main(String[] args) {
 				System.err.println("Erreur : caisse "+poscaisses.get(i)+" impossible à poser");
 				return null;
 			}
-		}
-		
-			
+		}if(ciblejoueuer!=null){
+			if(!niveau.addCiblejoueur(ciblejoueuer)){
+				System.err.println("Erreur : ciblejoueur "+ciblejoueuer+" impossible à poser");
+				return null;
+			}
+		}	
 		for (Position position: cibles)
 			if (!niveau.addCible(position)){
 				System.err.println("Erreur : cible "+position+" impossible à poser");

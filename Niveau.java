@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Niveau {
-   
     private Immobile[][] grille;
     private ArrayList<Position> cibles;
+    private Position ciblejoueur;
     private Position sortie_nord;
     private Position sortie_est;
     private Position sortie_sud;
     private Position sortie_ouest;
 
-    public Niveau(int x,int y,Position nord,Position est,Position sud,Position ouest){
+    public Niveau(int x,int y,Position nord,Position est,Position sud,Position ouest,Position cj){
         grille=new Immobile[x][y];
         for(int i=0;i<x;i++){
             for(int j=0;j<y;j++){
@@ -18,6 +18,7 @@ public class Niveau {
             }
         }
         cibles=new ArrayList<Position>();
+        ciblejoueur=cj;
         sortie_nord=nord;
         sortie_est=est;
         sortie_sud=sud;
@@ -35,6 +36,13 @@ public class Niveau {
     public boolean addCible(Position p){
         return cibles.add(p);
     }
+    public boolean addCiblejoueur(Position p){
+        if(estVide(p)){
+            ciblejoueur=p;
+            return true;
+        }
+        return false;
+    }
 
     public boolean addMur(Position p){
         if(estVide(p)){
@@ -46,6 +54,11 @@ public class Niveau {
 
     public boolean estCible(Position p){
         return cibles.contains(p);
+    }
+    public boolean estCibleJoueur(Position p){
+        if(ciblejoueur.equals(p))
+            return true;
+        return false;
     }
 
     public boolean estVide(Position p){
@@ -88,15 +101,14 @@ public class Niveau {
             for(int j=0;j<getY();j++){
                 Position p=new Position(i, j);
                 if(estCible(p))
-                    System.out.print(","); 
-                else
-                        System.out.print(get(p).toString());
-                }   
-                    
+                    System.out.print(",");
+                if(estCibleJoueur(p))
+                    System.out.print(".");
+                System.out.print(get(p).toString());
+                }       
             }
             System.out.println();
         }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -112,6 +124,11 @@ public class Niveau {
             if (other.cibles != null)
                 return false;
         } else if (!cibles.equals(other.cibles))
+            return false;
+        if (ciblejoueur == null) {
+            if (other.ciblejoueur != null)
+                return false;
+        } else if (!ciblejoueur.equals(other.ciblejoueur))
             return false;
         if (sortie_nord == null) {
             if (other.sortie_nord != null)
@@ -135,4 +152,5 @@ public class Niveau {
             return false;
         return true;
     }
-}
+    }
+    
