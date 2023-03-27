@@ -14,11 +14,13 @@ public class FenetreJeu extends JPanel implements KeyListener{
         private int size=100;
         private JFrame frame;
         private Image player;
+	Stack<Position> historiquePositions ;
 
         public FenetreJeu(Configuration t) {
             this.hauteur = t.getNiveau().getY();
             this.largeur = t.getNiveau().getX();
             this.terrain = t;
+	    Stack<Position> historiquePositions = new Stack<>();
 
             setBackground(Color.BLACK);
             setPreferredSize(new Dimension(largeur * tailleCase, hauteur * tailleCase+32));
@@ -62,10 +64,9 @@ public class FenetreJeu extends JPanel implements KeyListener{
                     if (tmp instanceof Mobile) {
 
                         if(terrain.estJoueur(p)){
-                            g.drawImage(player,l,c,null);
-                            //frame.getContentPane().add();
-                            //g.setColor(Color.GREEN);
-                            //g.fillOval(l*size, c*size, size, size);
+                            
+                            g2d.setColor(Color.GREEN);
+                            g2d.fillOval(l*size, c*size, 20, 20);
                         }
                         if(tmp.getType().name().equals("CAISSE")){
                             g2d.setColor(Color.yellow);
@@ -76,15 +77,11 @@ public class FenetreJeu extends JPanel implements KeyListener{
 
                 }
             }
-           /* String ss=String.valueOf(terrain.getBerger().resistance);
-            g.setFont(new Font("Verdana",1,20));
-            g.setColor(Color.red);
-            g.drawString("player resistance: "+ss,largeur*tailleCase-250,17);
-            g.drawString("Score: "+String.valueOf(Jeu.sortis),largeur,17);*/
+      
 
         }
         
-        }*/
+        }
        public void afficherDebutJeu() {
     // Création du titre "SOKOBAN"
     JLabel titre = new JLabel("SOKOBAN");
@@ -143,27 +140,23 @@ public class FenetreJeu extends JPanel implements KeyListener{
         }
         @Override
         public void keyPressed(KeyEvent e) {
-            /*switch(e.getKeyCode()){
-                case KeyEvent.VK_LEFT: System.out.println("left");terrain.getBerger().action(terrain.getCaseCarte(Terrain.lj, Terrain.colj), terrain.getCaseCarte(Terrain.lj, Terrain.colj-1) );
-                    frame.repaint();break;
-                case KeyEvent.VK_RIGHT: System.out.println("right");terrain.getBerger().action(terrain.getCaseCarte(Terrain.lj, Terrain.colj), terrain.getCaseCarte(Terrain.lj, Terrain.colj+1 ) );
-                    frame.repaint();break;
-                case KeyEvent.VK_UP: System.out.println("uppp");terrain.getBerger().action(terrain.getCaseCarte(Terrain.lj, Terrain.colj), terrain.getCaseCarte(Terrain.lj-1, Terrain.colj) );
-                    frame.repaint();break;
-                case KeyEvent.VK_DOWN: System.out.println("down");terrain.getBerger().action(terrain.getCaseCarte(Terrain.lj, Terrain.colj), terrain.getCaseCarte(Terrain.lj+1, Terrain.colj));
-                    frame.repaint();break;
-                case KeyEvent.VK_SPACE: terrain.getBerger().actionSortie(terrain.getCaseCarte(Terrain.lj, Terrain.colj));
-            }*/
+           
             switch(e.getKeyCode()) {
-                case KeyEvent.VK_LEFT:System.out.println("left");terrain.getJoueur().bougerVers(Direction.Gauche);
+                case KeyEvent.VK_LEFT:System.out.println("left");historiquePositions.push(terrain.getJoueur().getPosition());terrain.getJoueur().bougerVers(Direction.Gauche);
                     frame.repaint();break;
-                case KeyEvent.VK_RIGHT:System.out.println("right");terrain.getJoueur().bougerVers(Direction.Droite);
+                case KeyEvent.VK_RIGHT:System.out.println("right");historiquePositions.push(terrain.getJoueur().getPosition()); terrain.getJoueur().bougerVers(Direction.Droite);
                     frame.repaint();break;
-                case KeyEvent.VK_UP:System.out.println("up");terrain.getJoueur().bougerVers(Direction.Haut);
+                case KeyEvent.VK_UP:System.out.println("up");historiquePositions.push(terrain.getJoueur().getPosition());terrain.getJoueur().bougerVers(Direction.Haut);
                     frame.repaint();break;
-                case KeyEvent.VK_DOWN:System.out.println("down");terrain.getJoueur().bougerVers(Direction.Bas);
+                case KeyEvent.VK_DOWN:System.out.println("down");historiquePositions.push(terrain.getJoueur().getPosition()); terrain.getJoueur().bougerVers(Direction.Bas);
                     frame.repaint();break;
-                //case KeyEvent.VK_ENTER: if(terrain.victoire()){ecranFinal();}
+                case KeyEvent.VK_Z:
+    			if (e.isControlDown() && !historiquePositions.empty()) {
+        		Position posPrecedente = historiquePositions.pop();
+        		terrain.getJoueur().setPosition(posPrecedente);
+        		frame.repaint();
+    			}
+    			break;
             }
 
             }
@@ -174,12 +167,5 @@ public class FenetreJeu extends JPanel implements KeyListener{
         }
 
     }
-    /*super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            //mur
-            g2d.setColor(brickColor);
-            g2d.fillRoundRect(8*size, 10*size, size, size, 20, 20);
-            g.fillRect(2*size, 2*size, size, size, 20, 20);*/
-
+   
 
