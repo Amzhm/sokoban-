@@ -18,14 +18,3 @@ niveau17.txt
 niveau18.txt
 niveau19.txt
 niveau20.txt
-niveau21.txt
-niveau22.txt
-niveau23.txt
-niveau24.txt
-niveau25.txt
-niveau26.txt
-niveau27.txt
-niveau28.txt
-niveau29.txt
-niveau30.txt
-niveau31.txt
