@@ -25,7 +25,7 @@ public class Resolution {
             for (Direction direction : Direction.values()) {
                 Position next = courrante.add(direction.getOffset());
 
-                if (niveau.getType(next) == Type.MUR || visitee.contains(next)) {
+                if (niveau.getType(next) == Type.MUR || visitee.contains(next) || niveau.getType(next) == Type.CAISSE) {
                     continue;
                 }
 
